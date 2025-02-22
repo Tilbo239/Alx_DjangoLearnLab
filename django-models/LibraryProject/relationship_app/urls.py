@@ -9,5 +9,5 @@ urlpatterns = [
     path('', views.LibraryDetailView.as_view(), name='library_detail'),  # For the class-based view
     path('', register_view, name='register'),
     path('', LoginView.as_view(template_name='auth/login.html'), name='login'),
-    path('', logout_view, name='logout'),
+    path('', LogoutView.as_view(template_name='auth/logout.html'), name='logout'),
 ]
