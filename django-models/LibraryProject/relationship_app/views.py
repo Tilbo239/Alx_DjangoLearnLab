@@ -33,7 +33,7 @@ def register_view(request):
             return redirect('list_books')  # Remplace 'home' par ton URL d'accueil
     else:
         form = UserCreationForm()
-    return render(request, 'auth/register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
