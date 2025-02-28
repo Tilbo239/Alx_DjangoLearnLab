@@ -50,6 +50,12 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+
+
+
+
+
+
     # template_name = 'relationship_app/library_detail.html'
     # context_object_name = 'library'
 
