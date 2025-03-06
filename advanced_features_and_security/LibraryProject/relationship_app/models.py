@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.conf import settings
+
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
@@ -48,17 +50,17 @@ class UserProfile(models.Model):
     ('Librarian', 'Librarian'), 
   ]
 
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   role = models.CharField(max_length=15, choices=ROLE_CHOICES)
 
   def __str__(self):
     return self.user.username
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_user_profile(sender, instance, created, **kwargs):
+#   if created:
+#     UserProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.userprofile.save()
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.userprofile.save()
