@@ -1,21 +1,27 @@
+
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 
 @permission_required('bookshelf.can_view', raise_exception=True)
-def comment_list(request):
+def book_list(request):
    
-     return HttpResponse("You can view the books!")
+     return HttpResponse("Book list!")
+
+@permission_required('bookshelf.can_view', raise_exception=True)
+def post_list(request):
+   
+     return HttpResponse("Post list!")
 
 @permission_required('bookshelf.can_create', raise_exception=True)
-def create_comment(request):
-    return HttpResponse("You can create a comment!")
+def create_post(request):
+    return HttpResponse("Post created!")
     
 
 @permission_required('bookshelf.can_edit', raise_exception=True)
-def edit_comment(request, comment_id):
+def edit_post(request, article_id):
     return HttpResponse("Post updated!")
     
 
 @permission_required('bookshelf.can_delete', raise_exception=True)
-def delete_comment(request, comment_id):
+def delete_post(request, article_id):
     return HttpResponse("Post deleted!") 
