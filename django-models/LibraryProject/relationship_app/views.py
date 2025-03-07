@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book
 from django.contrib.auth.decorators import user_passes_test
@@ -20,19 +21,17 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['books'] = self.object.books.all()
-        return context
+    def get_queryset(self):
+        return Library.objects.all()
+   
 #register view
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('list_books')  # Remplace 'home' par ton URL d'accueil
+            # login(request, user)
+            return redirect('relationship_app:book_list')  # Remplace 'home' par ton URL d'accueil
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
@@ -40,27 +39,34 @@ def register_view(request):
 # Login view
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
             login(request, user)
-            return redirect('list_books')  # Remplace 'home' par ton URL d'accueil
-    else:
-        form = AuthenticationForm()
+            messages.success(request, "Logged in successfully!")
+            return redirect("relationship_app:book_list")
+        else:
+            messages.error(request, "Invalid username or password!")
+
+    form = AuthenticationForm()
     return render(request, 'auth/login.html', {'form': form})
 
 # Logout view
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('relationship_app:login')
 
 # Check user role Admin
 def is_admin(user):
     return user.userprofile.role == 'Admin'
 
+# Check user role Librarian
 def is_librarian(user):
     return user.userprofile.role == 'Librarian'
 
+# Check user role Member
 def is_member(user):
     return user.userprofile.role == 'Member'
 
