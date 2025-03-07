@@ -24,6 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-48yywj%=g(4rb2g35q9#8n8ncdhjj)k#kjkbaa@yayi&w61km6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+# Set DEBUG to False in production
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -51,6 +53,23 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Security-related settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'  # Prevents your site from being loaded in an iframe
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True  # Redirects all non-HTTPS requests to HTTPS
+
+# Ensure cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True  # JavaScript can't access the CSRF cookie
+SESSION_COOKIE_HTTPONLY = True  # JavaScript can't access the session cookie
+
+# Set secure HSTS header
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
