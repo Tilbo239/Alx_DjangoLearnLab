@@ -71,6 +71,10 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+# Ensure the request.is_secure() method returns True
+# This setting fixes a bug in certain proxy setups
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [

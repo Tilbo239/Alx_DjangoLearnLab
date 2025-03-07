@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book
 from django.contrib.auth.decorators import user_passes_test
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic.detail import DetailView
 from .models import Library
 
+@require_http_methods(["GET"])
 def list_books(request):
     books = Book.objects.all()
     context = {
@@ -15,8 +17,7 @@ def list_books(request):
     }
     return render(request, 'relationship_app/list_books.html', context)
 
-
-
+@require_http_methods(["GET"])
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
@@ -25,6 +26,7 @@ class LibraryDetailView(DetailView):
         return Library.objects.all()
    
 #register view
+@require_http_methods(["POST"])
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -37,6 +39,7 @@ def register_view(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 # Login view
+@require_http_methods(["POST"])
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -54,6 +57,7 @@ def login_view(request):
     return render(request, 'auth/login.html', {'form': form})
 
 # Logout view
+@require_http_methods(["GET"])
 def logout_view(request):
     logout(request)
     return redirect('relationship_app:login')
@@ -77,24 +81,27 @@ def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
 # Librarian View
+@require_http_methods(["GET"])
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
 #member View
+@require_http_methods(["GET"])
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
 
-
+@require_http_methods(["POST"])
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
     pass
-
+@require_http_methods(["UPDATE"])
 @permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book(request, book_id):
     pass
 
+@require_http_methods(["DELETE"])
 @permission_required('relationship_app.can_delete_book', raise_exception=True)
 def delete_book(request, book_id):
     pass
