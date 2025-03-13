@@ -18,7 +18,7 @@ class Book(models.Model):
     Each book is linked to an author via a ForeignKey relationship.
     """
     title = models.CharField(max_length=100)
-    publication_date = models.IntegerField()
+    publication_year = models.IntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
