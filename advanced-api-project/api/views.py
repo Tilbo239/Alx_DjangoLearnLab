@@ -1,10 +1,11 @@
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated 
 
 
-class CreateView(generics.CreateAPIView):
+class BookCreateView(generics.CreateAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -16,11 +17,23 @@ class AuthorCreateView(generics.CreateAPIView):
     serializer_class = AuthorSerializer
     permission_classes = [IsAuthenticated]
 
-class ListView(generics.ListAPIView):
+class BookListView(generics.ListAPIView):
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Ajout des filtres, recherche et tri
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    # Champs disponibles pour le filtrage
+    filterset_fields = ['title', 'author__name', 'publication_year']
+
+    # Champs disponibles pour la recherche
+    search_fields = ['title', 'author__name']
+
+    # Champs disponibles pour l'ordonnancement
+    ordering_fields = ['title', 'publication_year']
 
 class AuthorListView(generics.ListAPIView):
     
@@ -29,20 +42,20 @@ class AuthorListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]   
 
 
-class DetailView(generics.RetrieveAPIView):
+class BookDetailView(generics.RetrieveAPIView):
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     
 
-class UpdateView(generics.UpdateAPIView):
+class BookUpdateView(generics.UpdateAPIView):
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class DeleteView(generics.DestroyAPIView):
+class BookDeleteView(generics.DestroyAPIView):
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
