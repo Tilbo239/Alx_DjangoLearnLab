@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'django_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates/mangalib' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +77,15 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django_blog',
+        'USER': 'root',
+        'PASSWORD': 'ITServ32$',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # Support des caractères spéciaux
+        }
     }
 }
 
@@ -116,7 +124,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'blog/static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
