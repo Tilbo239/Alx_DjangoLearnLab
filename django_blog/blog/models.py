@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django import forms
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -9,3 +11,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]
