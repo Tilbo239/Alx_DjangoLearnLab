@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    {% comment %} <h2>{% if object %}Modifier l'Article{% else %}Créer un Article{% endif %}</h2> {% endcomment %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+      </div>
+      <div class="mb-3">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+      </div>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+  </div>
+{% endblock %}

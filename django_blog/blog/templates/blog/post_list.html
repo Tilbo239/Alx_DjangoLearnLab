@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 >List of post</h2>
+{% for post in posts %}
+    <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+    {% comment %} <p>{{ post.content|truncatewords:20 }}</p> {% endcomment %}
+    <p>Written by {{ post.author }} - {{ post.created_at }}</p>
+{% endfor %}
+{% if user.is_authenticated %}
+    <a href="{% url 'new-post' %}">Create a new article</a>
+{% endif %}
+{% endblock %}
