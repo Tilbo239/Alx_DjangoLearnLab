@@ -135,7 +135,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
     def test_func(self):
-        """Vérifie que l'utilisateur est bien l'auteur du commentaire"""
+        """Checks that the user is the author of the comment"""
         comment = self.get_object()
         return self.request.user == comment.author
     
@@ -147,7 +147,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = "blog/comment_confirm_delete.html"
 
     def test_func(self):
-        """Vérifie que l'utilisateur est bien l'auteur du commentaire"""
+        """Checks that the user is the author of the comment"""
         comment = self.get_object()
         return self.request.user == comment.author
     
