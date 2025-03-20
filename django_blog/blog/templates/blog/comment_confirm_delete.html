@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Es-tu sûr de vouloir supprimer ?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Supprimer</button>
+    </form>
+    <a href="{% url 'posts' %}">Annuler</a>
+
+{% endblock %}
